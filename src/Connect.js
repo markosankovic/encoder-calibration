@@ -1,7 +1,11 @@
 import React from 'react';
+import fs from 'fs';
+import { remote } from 'electron';
 import { alive$, connect, disconnect, getSystemVersion } from './MotionMasterService';
 
 class Connect extends React.Component {
+
+  endpointsPath = remote.app.getPath('userData') + '/endpoints.json';
 
   constructor(props) {
     super(props);
@@ -19,6 +23,22 @@ class Connect extends React.Component {
   }
 
   componentDidMount() {
+    fs.readFile(this.endpointsPath, (err, data) => {
+      if (err) {
+        console.warn(err.message);
+      } else {
+        try {
+          const endpoints = JSON.parse(data);
+          this.setState({
+            serverEndpoint: endpoints.serverEndpoint,
+            notificationEndpoint: endpoints.notificationEndpoint,
+          });
+        } catch (err) {
+          console.error(err);
+        }
+      }
+    });
+
     alive$.subscribe(alive => {
       this.setState({ alive })
       if (alive) {

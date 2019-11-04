@@ -1,12 +1,18 @@
 const { encodeMotionMasterMessage, decodeMotionMasterMessage } = require('@synapticon/motion-master-client');
 const { app, BrowserWindow, ipcMain } = require('electron');
-const { BehaviorSubject, interval, Subject } = require('rxjs');
+const { BehaviorSubject, interval, Subject, Subscription } = require('rxjs');
 const { first, timeout } = require('rxjs/operators');
 const { v4 } = require('uuid');
 const zmq = require('zeromq');
 
+const fs = require('fs');
 const path = require('path');
 const isDev = require('electron-is-dev');
+
+const endpointsPath = app.getPath('userData') + '/endpoints.json';
+let prevEndpoints;
+
+process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
 
 app.setName('Encoder Calibration');
 
@@ -119,17 +125,25 @@ ipcMain.on('motion-master-message', (_event, arg) => {
 ipcMain.on('connect', (_event, arg) => connect(arg));
 ipcMain.on('disconnect', (_event, arg) => disconnect(arg));
 
-function connect(config) {
-  serverSocket.connect(config.serverEndpoint);
-  notificationSocket.connect(config.notificationEndpoint);
+function connect(endpoints) {
+  if (prevEndpoints) {
+    disconnect(prevEndpoints);
+  }
+
+  serverSocket.connect(endpoints.serverEndpoint);
+  notificationSocket.connect(endpoints.notificationEndpoint);
+
+  prevEndpoints = endpoints;
+  saveEndpoints(endpointsPath, endpoints);
 }
 
-function disconnect(config) {
+function disconnect(endpoints) {
   try {
-    serverSocket.disconnect(config.serverEndpoint);
-    notificationSocket.disconnect(config.notificationEndpoint);
+    serverSocket.disconnect(endpoints.serverEndpoint);
+    notificationSocket.disconnect(endpoints.notificationEndpoint);
+    prevEndpoints = null;
   } catch (err) {
-    console.error(err);
+    console.warn(`Already disconnected: ${err.message}`);
   }
 }
 
@@ -147,12 +161,41 @@ function subscribeToPingSystemInterval(period) {
 }
 
 // try to connect with default config endpoints on ready after win has initialized
-app.on('ready', () => {
-  connect(defaultConfig);
+app.on('ready', async () => {
+  const endpoints = await loadEndpoints(endpointsPath, defaultConfig);
+  connect(endpoints);
 
-  alive$.subscribe(alive => win.webContents.send('motion-master-alive', alive));
+  let subscription = new Subscription();
 
-  win.webContents.on('dom-ready', () => alive$.pipe(
-    first(),
-  ).subscribe(alive => win.webContents.send('motion-master-alive', alive)));
+  win.webContents.on('dom-ready', () => {
+    subscription.unsubscribe();
+    subscription = alive$.subscribe(alive => win.webContents.send('motion-master-alive', alive));
+  });
 });
+
+function loadEndpoints(endpointsPath, defaultConfig) {
+  return new Promise((resolve) => {
+    let endpoints = { ...defaultConfig };
+    fs.readFile(endpointsPath, (err, data) => {
+      if (err) {
+        console.warn(err.message);
+      } else {
+        try {
+          const savedEndpoints = JSON.parse(data);
+          endpoints = { ...savedEndpoints };
+        } catch (err) {
+          console.error(err);
+        }
+      }
+      resolve(endpoints);
+    });
+  });
+}
+
+function saveEndpoints(endpointsPath, endpoints) {
+  fs.writeFile(endpointsPath, JSON.stringify(endpoints), (err) => {
+    if (err) {
+      console.error(err);
+    }
+  });
+}
