@@ -1,7 +1,12 @@
 {
   "name": "encoder-calibration",
   "version": "0.1.0",
-  "private": true,
+  "description": "Evaluation tool to know if the Circulo encoder disc is at the correct distance from the sensor.",
+  "private": false,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/markosankovic/encoder-calibration.git"
+  },
   "dependencies": {
     "electron-is-dev": "^1.1.0",
     "react": "^16.11.0",
@@ -14,7 +19,10 @@
     "build": "rescripts build",
     "test": "rescripts test",
     "eject": "react-scripts eject",
-    "electron-dev": "concurrently \"BROWSER=none yarn start\" \"wait-on http://localhost:3000 && electron .\""
+    "electron-dev": "concurrently \"BROWSER=none yarn start\" \"wait-on http://localhost:3000 && electron .\"",
+    "postinstall": "electron-builder install-app-deps",
+    "preelectron-pack": "yarn build",
+    "electron-pack": "electron-builder -l"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -35,8 +43,32 @@
     "@rescripts/cli": "^0.0.13",
     "@rescripts/rescript-env": "^0.0.11",
     "concurrently": "^5.0.0",
-    "electron": "^7.0.1",
+    "electron": "6.1.3",
     "electron-builder": "^22.1.0",
+    "typescript": "^3.6.4",
     "wait-on": "^3.3.0"
+  },
+  "homepage": "./",
+  "author": "Marko Sanković <msankovic@synapticon.com> (https://github.com/markosankovic)",
+  "license": "ISC",
+  "build": {
+    "appId": "com.synapticon.encoder-calibration",
+    "productName": "EncoderCalibration",
+    "copyright": "Copyright © 2019 ${author}",
+    "linux": {
+      "executableName": "encoder-calibration",
+      "artifactName": "encoder-calibration-${version}.${ext}",
+      "category": "Utilities"
+    },
+    "mac": {
+      "category": "public.app-category.utilities"
+    },
+    "files": [
+      "build/**/*",
+      "node_modules/**/*"
+    ],
+    "directories": {
+      "buildResources": "assets"
+    }
   }
 }
