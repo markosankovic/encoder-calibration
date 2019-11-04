@@ -27,8 +27,8 @@ class Device extends React.Component {
     });
   }
 
-  componentWillUpdate(_nextProps, nextState) {
-    window.deviceAddress$.next(nextState.selectedDeviceAddress);
+  componentDidUpdate() {
+    window.deviceAddress$.next(this.state.selectedDeviceAddress);
   }
 
   handleDeviceAddressChange(event) {
