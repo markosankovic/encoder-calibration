@@ -1,7 +1,5 @@
 import React from 'react';
-import { alive$, connect, disconnect, motionMasterClient, getSystemVersion } from './MotionMasterService';
-
-console.log(motionMasterClient);
+import { alive$, connect, disconnect, getSystemVersion } from './MotionMasterService';
 
 class Connect extends React.Component {
 
@@ -49,7 +47,7 @@ class Connect extends React.Component {
   render() {
     const aliveBadge = this.state.alive
       ? <span className="badge badge-success p-2">Motion Master (v{this.state.systemVersion}) is online</span>
-      : <span className="badge badge-danger p-2">Motion Master is not responding</span>
+      : <span className="badge badge-danger p-2">Motion Master is offline</span>
 
     return (
       <form onSubmit={this.handleSubmit}>

@@ -1,36 +1,65 @@
 import React from 'react';
-import optimum from './optimum.svg';
+import { BehaviorSubject } from 'rxjs';
+import { alive$ } from './MotionMasterService';
 import './App.css';
 import Connect from './Connect';
 import Footer from './Footer';
+import Device from './Device';
+import MagneticEncoderAlignment from './MagneticEncoderAlignment';
 
-function App() {
-  return (
-    <div className="container-fluid">
+window.deviceAddress$ = new BehaviorSubject(0);
 
-      <div className="row py-3 mb-3 bg-white border-bottom">
-        <div className="col">
-          <Connect></Connect>
+class App extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      alive: false,
+    };
+  }
+
+  componentDidMount() {
+    alive$.subscribe(alive => this.setState({ alive }));
+  }
+
+  render() {
+
+    const magneticEncoderAlignment = this.state.alive
+      ? (
+        <div className="row">
+          <div className="col">
+            <MagneticEncoderAlignment></MagneticEncoderAlignment>
+          </div>
         </div>
-      </div>
+      ) : null;
 
-      <div className="row">
-        <div className="col">
-          <h5>Magnetic Encoder Alignment</h5>
-          <p>To achieve the best result the magnetic disc must be mounted in the optimum distance to the sensor chip.</p>
-          <img src={optimum} alt="Optimum distance to the sensor chip" />
+    return (
+      <div className="container-fluid">
+
+        <div className="row py-3 mb-3 bg-white border-bottom">
+          <div className="col">
+            <Connect></Connect>
+          </div>
         </div>
-      </div>
 
-      <div className="row">
-        <div className="col">
-          <hr></hr>
-          <Footer></Footer>
+        <div className="row">
+          <div className="col">
+            <Device></Device>
+          </div>
         </div>
-      </div>
 
-    </div>
-  );
+        {magneticEncoderAlignment}
+
+        <div className="row">
+          <div className="col">
+            <hr></hr>
+            <Footer></Footer>
+          </div>
+        </div>
+
+      </div>
+    );
+  }
 }
 
 export default App;
