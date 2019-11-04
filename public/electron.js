@@ -19,7 +19,7 @@ function createWindow() {
     webPreferences: {
       nodeIntegration: true
     },
-    icon: path.join(__dirname, 'assets/icons/512x512.png')
+    icon: 'assets/icons/512x512.png'
   });
 
   win.loadURL(isDev ? 'http://localhost:3000' : `file://${path.join(__dirname, '../build/index.html')}`);
