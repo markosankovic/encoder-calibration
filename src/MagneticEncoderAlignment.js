@@ -42,10 +42,10 @@ class MagneticEncoderAlignment extends React.Component {
       );
     }
 
-    const tooCloseStyle = { width: '10%', 'background-color': '#ffe59d' };
-    const optimalStyle = { width: '27%', 'background-color': '#94c47f' };
-    const tooFarStyle = { width: '41%', 'background-color': '#ffe59d' };
-    const outOfRangeStyle = { width: '22%', 'background-color': '#e99a9b' };
+    const tooCloseStyle = { width: '10%', backgroundColor: '#ffe59d' };
+    const optimalStyle = { width: '27%', backgroundColor: '#94c47f' };
+    const tooFarStyle = { width: '41%', backgroundColor: '#ffe59d' };
+    const outOfRangeStyle = { width: '22%', backgroundColor: '#e99a9b' };
 
     return (
       <div>
@@ -54,7 +54,7 @@ class MagneticEncoderAlignment extends React.Component {
         <img src={optimum} alt="Optimum distance to the sensor chip" />
         <div className="mt-3">
           <p><strong>Measured distance</strong>: <span>{this.state.measuredDistanceValue}</span></p>
-          <input type="range" className="w-100" name="measuredDistance" value={this.state.measuredDistanceValue} min="0" max="250" />
+          <input type="range" className="w-100" name="measuredDistance" value={this.state.measuredDistanceValue} readOnly min="0" max="250" />
           <div className="d-flex text-center w-100 mt-1">
             <div style={tooCloseStyle}>
               <div className="py-2 px-1">TOO CLOSE</div>
