@@ -43,10 +43,9 @@ class Connect extends React.Component {
   }
 
   render() {
-
     const aliveBadge = this.state.alive
-      ? <span class="badge badge-success p-2">Motion Master is online</span>
-      : <span class="badge badge-danger p-2">Motion Master is not responding</span>
+      ? <span className="badge badge-success p-2">Motion Master is online</span>
+      : <span className="badge badge-danger p-2">Motion Master is not responding</span>
 
     return (
       <form onSubmit={this.handleSubmit}>
