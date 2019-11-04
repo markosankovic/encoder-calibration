@@ -1,5 +1,5 @@
 import React from 'react';
-import { alive$, connect, disconnect, motionMasterClient } from './MotionMasterService';
+import { alive$, connect, disconnect, motionMasterClient, getSystemVersion } from './MotionMasterService';
 
 console.log(motionMasterClient);
 
@@ -11,6 +11,7 @@ class Connect extends React.Component {
       alive: false,
       serverEndpoint: 'tcp://127.0.0.1:62524',
       notificationEndpoint: 'tcp://127.0.0.1:62525',
+      systemVersion: '',
     };
 
     this.handleServerEndpointChange = this.handleServerEndpointChange.bind(this);
@@ -20,7 +21,12 @@ class Connect extends React.Component {
   }
 
   componentDidMount() {
-    alive$.subscribe(alive => this.setState({ alive }));
+    alive$.subscribe(alive => {
+      this.setState({ alive })
+      if (alive) {
+        getSystemVersion(systemVersion => this.setState({ systemVersion: systemVersion.version }));
+      }
+    });
   }
 
   handleServerEndpointChange(event) {
@@ -42,7 +48,7 @@ class Connect extends React.Component {
 
   render() {
     const aliveBadge = this.state.alive
-      ? <span className="badge badge-success p-2">Motion Master is online</span>
+      ? <span className="badge badge-success p-2">Motion Master (v{this.state.systemVersion}) is online</span>
       : <span className="badge badge-danger p-2">Motion Master is not responding</span>
 
     return (
