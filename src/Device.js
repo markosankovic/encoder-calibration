@@ -1,5 +1,5 @@
 import React from 'react';
-import { alive$, getDeviceInfo } from './MotionMasterService';
+import { alive$, getDeviceInfo, getDeviceParameterValue } from './MotionMasterService';
 
 class Device extends React.Component {
 
@@ -9,6 +9,7 @@ class Device extends React.Component {
       alive: false,
       devices: [],
       selectedDeviceAddress: 0,
+      manufacturerSofwareVersion: '',
     };
 
     this.handleDeviceAddressChange = this.handleDeviceAddressChange.bind(this);
@@ -23,12 +24,13 @@ class Device extends React.Component {
           if (devices && devices.length > 0) {
             const selectedDeviceAddress = devices[0].deviceAddress;
             this.setState({ devices, selectedDeviceAddress });
+            this.updateManufacturerSoftwareVersion(selectedDeviceAddress);
           } else {
-            this.setState({ devices: [], selectedDeviceAddress: null });
+            this.setState({ devices: [], selectedDeviceAddress: null, manufacturerSofwareVersion: '' });
           }
         });
       } else {
-        this.setState({ devices: [], selectedDeviceAddress: null });
+        this.setState({ devices: [], selectedDeviceAddress: null, manufacturerSofwareVersion: '' });
       }
     });
   }
@@ -38,7 +40,19 @@ class Device extends React.Component {
   }
 
   handleDeviceAddressChange(event) {
-    this.setState({ selectedDeviceAddress: Number(event.target.value) });
+    const selectedDeviceAddress = Number(event.target.value);
+    this.setState({ selectedDeviceAddress });
+    this.updateManufacturerSoftwareVersion(selectedDeviceAddress);
+  }
+
+  updateManufacturerSoftwareVersion(deviceAddress) {
+    getDeviceParameterValue(deviceAddress, { index: 0x100A, subindex: 0 }).subscribe(parameter => {
+      if (parameter) {
+        this.setState({ manufacturerSofwareVersion: parameter.stringValue });
+      } else {
+        this.setState({ manufacturerSofwareVersion: '' });
+      }
+    });
   }
 
   render() {
@@ -74,6 +88,7 @@ class Device extends React.Component {
           <select className="custom-select" id="devicesSelect" value={this.state.value} defaultValue={this.state.selectedDeviceAddress} onChange={this.handleDeviceAddressChange}>
             {options}
           </select>
+          <div className="ml-2">{this.state.manufacturerSofwareVersion}</div>
         </form>
         <hr></hr>
       </div>
