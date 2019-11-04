@@ -50,7 +50,7 @@ class App extends React.Component {
 
         {magneticEncoderAlignment}
 
-        <div className="row">
+        <div className="row mb-3">
           <div className="col">
             <hr></hr>
             <Footer></Footer>

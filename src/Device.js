@@ -19,7 +19,13 @@ class Device extends React.Component {
       this.setState({ alive });
       if (alive) {
         getDeviceInfo(deviceInfo => {
-          this.setState({ devices: deviceInfo.devices });
+          const devices = deviceInfo.devices;
+          if (devices && devices.length > 0) {
+            const selectedDeviceAddress = devices[0].deviceAddress;
+            this.setState({ devices, selectedDeviceAddress });
+          } else {
+            this.setState({ devices: [], selectedDeviceAddress: null });
+          }
         });
       } else {
         this.setState({ devices: [], selectedDeviceAddress: null });
