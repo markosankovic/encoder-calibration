@@ -1,24 +1,17 @@
 import React from 'react';
-import logo from './logo.svg';
+import optimum from './optimum.svg';
 import './App.css';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="container-fluid">
+      <div className="row">
+        <div className="col">
+          <h5>Magnetic Encoder Alignment</h5>
+          <p>To achieve the best result the magnetic disc must be mounted in the optimum distance to the sensor chip.</p>
+          <img src={optimum} alt="Optimum distance to the sensor chip" />
+        </div>
+      </div>
     </div>
   );
 }
