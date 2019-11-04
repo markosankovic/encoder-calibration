@@ -1,6 +1,6 @@
 const { encodeMotionMasterMessage, decodeMotionMasterMessage } = require('@synapticon/motion-master-client');
 const { app, BrowserWindow, ipcMain } = require('electron');
-const { interval, Subject } = require('rxjs');
+const { BehaviorSubject, interval, Subject } = require('rxjs');
 const { first, timeout } = require('rxjs/operators');
 const { v4 } = require('uuid');
 const zmq = require('zeromq');
@@ -84,6 +84,8 @@ serverSocket.identity = defaultConfig.identity;
 const motionMasterMessageSubject = new Subject();
 let motionMasterAliveSubscription;
 
+const alive$ = new BehaviorSubject();
+
 serverSocket.on('message', (data) => {
   const msg = decodeMotionMasterMessage(data);
   motionMasterMessageSubject.next(msg);
@@ -92,12 +94,9 @@ serverSocket.on('message', (data) => {
     motionMasterAliveSubscription = motionMasterMessageSubject.pipe(
       timeout(defaultConfig.motionMasterAliveTimeoutDue),
     ).subscribe({
-      error: () => win.webContents.send('motion-master-alive', false),
+      error: () => alive$.next(false),
     });
-    motionMasterMessageSubject.pipe(first(msg => msg !== undefined)).subscribe(() => {
-      win.webContents.send('motion-master-alive', true);
-      win.webContents.once('dom-ready', () => win.webContents.send('motion-master-alive', true));
-    });
+    motionMasterMessageSubject.pipe(first(msg => msg !== undefined)).subscribe(() => alive$.next(true));
   }
 
   if (!msg.status.systemPong) {
@@ -148,4 +147,12 @@ function subscribeToPingSystemInterval(period) {
 }
 
 // try to connect with default config endpoints on ready after win has initialized
-app.on('ready', () => connect(defaultConfig)); 
+app.on('ready', () => {
+  connect(defaultConfig);
+
+  alive$.subscribe(alive => win.webContents.send('motion-master-alive', alive));
+
+  win.webContents.on('dom-ready', () => alive$.pipe(
+    first(),
+  ).subscribe(alive => win.webContents.send('motion-master-alive', alive)));
+});

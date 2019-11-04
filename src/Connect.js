@@ -20,9 +20,7 @@ class Connect extends React.Component {
   }
 
   componentDidMount() {
-    alive$.subscribe(alive => {
-      this.setState({ alive });
-    });
+    alive$.subscribe(alive => this.setState({ alive }));
   }
 
   handleServerEndpointChange(event) {
