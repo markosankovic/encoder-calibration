@@ -1,7 +1,8 @@
 import { MotionMasterClient } from '@synapticon/motion-master-client';
 import { ipcRenderer } from 'electron';
-import { BehaviorSubject, Subject } from 'rxjs';
-import { first, map } from 'rxjs/operators';
+import Long from 'long';
+import { BehaviorSubject, concat, Subject } from 'rxjs';
+import { first, last, map } from 'rxjs/operators';
 
 const input$ = new Subject();
 const output$ = new Subject();
@@ -50,12 +51,42 @@ export function setDeviceParameterValue(deviceAddress, parameter) {
   return motionMasterClient.requestSetDeviceParameterValues(deviceAddress, [parameter]).pipe(first());
 }
 
-export async function getBiSSRegisterValue(deviceAddress, registerAddress) {
-  await setDeviceParameterValue(deviceAddress, { index: 0x2800, subindex: 2, intValue: 0 }).toPromise();
-  await setDeviceParameterValue(deviceAddress, { index: 0x2800, subindex: 3, uintValue: registerAddress }).toPromise();
-  await setDeviceParameterValue(deviceAddress, { index: 0x2800, subindex: 1, intValue: 0 }).toPromise();
-  await setDeviceParameterValue(deviceAddress, { index: 0x2800, subindex: 1, intValue: 1 }).toPromise();
-  return getDeviceParameterValue(deviceAddress, { index: 0x2008, subindex: 5 });
+export function getBiSSRegisterValue(deviceAddress, registerAddress) {
+  return concat(
+    setDeviceParameterValue(deviceAddress, { index: 0x2800, subindex: 2, intValue: 0 }),
+    setDeviceParameterValue(deviceAddress, { index: 0x2800, subindex: 3, uintValue: registerAddress }),
+    setDeviceParameterValue(deviceAddress, { index: 0x2800, subindex: 1, intValue: 0 }),
+    setDeviceParameterValue(deviceAddress, { index: 0x2800, subindex: 1, intValue: 1 }),
+    getDeviceParameterValue(deviceAddress, { index: 0x2800, subindex: 5 }),
+  ).pipe(
+    last(),
+    map(parameter => {
+      if (parameter.intValue) {
+        const longValue = new Long(parameter.intValue.low, parameter.intValue.high, parameter.intValue.unsigned);
+        return longValue.toInt();
+      } else {
+        console.error(`Error reading 0x2008:5. There is no intValue on this parameter.`, parameter.error);
+        return 0;
+      }
+    })
+  );
+}
+
+export function calcAcGain(val) {
+  const table = [4.4, 7.8, 12.4, 20.7];
+  return table[val];
+}
+
+export function calcAfGain(val) {
+  if (val === 0x0) {
+    return 1;
+  } else if (val === 0x1) {
+    return 1.45;
+  } else if (val === 0x7) {
+    return 13.75;
+  } else {
+    return Math.exp(Math.log(20) / 8 * val);
+  }
 }
 
 ipcRenderer.on('motion-master-alive', (_event, alive) => alive$.next(alive));

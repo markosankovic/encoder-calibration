@@ -1,6 +1,7 @@
 import React from 'react';
-import { Subscription } from 'rxjs';
+import { Subscription, zip } from 'rxjs';
 import optimum from './optimum.svg';
+import { calcAcGain, calcAfGain, getBiSSRegisterValue } from './MotionMasterService';
 
 class MagneticEncoderAlignment extends React.Component {
 
@@ -26,8 +27,23 @@ class MagneticEncoderAlignment extends React.Component {
     this.deviceAddressSubscription.unsubscribe();
   }
 
-  handleMeasureDistance(event) {
-    alert('Not yet implemented!');
+  handleMeasureDistance() {
+    zip(
+      getBiSSRegisterValue(this.state.deviceAddress, 0x2B),
+      getBiSSRegisterValue(this.state.deviceAddress, 0x2F),
+    ).subscribe((reg1, reg2) => {
+      const afGainM = calcAfGain(reg1 & 0b00111);
+      const acGainM = calcAcGain((reg1 >> 3) & 0b00011);
+      const mVal = afGainM * acGainM;
+      console.info(`afGainM: ${afGainM}, acGainM: ${acGainM}, mVal: ${mVal}`);
+
+      const afGainN = calcAfGain(reg2 & 0b00111);
+      const acGainN = calcAcGain((reg2 >> 3) & 0b00011);
+      const nVal = afGainN * acGainN;
+      console.info(`acGainN: ${afGainN}, acGainN: ${acGainN}, nVal: ${nVal}`);
+
+      this.setState({ measuredDistanceValue: mVal });
+    });
   }
 
   render() {
@@ -42,10 +58,10 @@ class MagneticEncoderAlignment extends React.Component {
       );
     }
 
-    const tooCloseStyle = { width: '10%', backgroundColor: '#ffe59d' };
-    const optimalStyle = { width: '27%', backgroundColor: '#94c47f' };
-    const tooFarStyle = { width: '41%', backgroundColor: '#ffe59d' };
-    const outOfRangeStyle = { width: '22%', backgroundColor: '#e99a9b' };
+    const tooCloseStyle = { width: '9%', backgroundColor: '#ffe59d' }; // 8.783
+    const optimalStyle = { width: '23%', backgroundColor: '#94c47f' }; // 23.539
+    const tooFarStyle = { width: '36%', backgroundColor: '#ffe59d' }; // 35.836
+    const outOfRangeStyle = { width: '32%', backgroundColor: '#e99a9b' }; // 31.137
 
     return (
       <div>
