@@ -1,5 +1,6 @@
 import React from 'react';
-import { Subscription, zip } from 'rxjs';
+import { Subscription } from 'rxjs';
+import { map, mergeMap } from 'rxjs/operators';
 import optimum from './optimum.svg';
 import { calcAcGain, calcAfGain, furtherFromValue, getBiSSRegisterValue } from './MotionMasterService';
 
@@ -12,6 +13,7 @@ class MagneticEncoderAlignment extends React.Component {
     this.state = {
       deviceAddress: 0,
       measuredDistanceValue: 0,
+      measureDistanceBtnDisabled: false,
     };
 
     this.handleMeasureDistance = this.handleMeasureDistance.bind(this);
@@ -28,25 +30,29 @@ class MagneticEncoderAlignment extends React.Component {
   }
 
   handleMeasureDistance() {
-    zip(
-      getBiSSRegisterValue(this.state.deviceAddress, 0x2B),
-      getBiSSRegisterValue(this.state.deviceAddress, 0x2F),
-    ).subscribe((reg1, reg2) => {
+    this.setState({ measureDistanceBtnDisabled: true });
+    getBiSSRegisterValue(this.state.deviceAddress, 0x2B).pipe(
+      mergeMap(reg1 => getBiSSRegisterValue(this.state.deviceAddress, 0x2F).pipe(
+        map(reg2 => [reg1, reg2]),
+      ))
+    ).subscribe(([reg1, reg2]) => {
       const afGainM = calcAfGain(reg1 & 0b00111);
       const acGainM = calcAcGain((reg1 >> 3) & 0b00011);
       const mVal = afGainM * acGainM;
-      console.info(`afGainM: ${afGainM}, acGainM: ${acGainM}, mVal: ${mVal}`);
+      console.info(`reg1: ${reg1}, afGainM: ${afGainM}, acGainM: ${acGainM}, mVal: ${mVal}`);
 
       const afGainN = calcAfGain(reg2 & 0b00111);
       const acGainN = calcAcGain((reg2 >> 3) & 0b00011);
       const nVal = afGainN * acGainN;
-      console.info(`acGainN: ${afGainN}, acGainN: ${acGainN}, nVal: ${nVal}`);
+      console.info(`reg2: ${reg2}, afGainN: ${afGainN}, acGainN: ${acGainN}, nVal: ${nVal}`);
 
       if (furtherFromValue(mVal, nVal, 58.5) >= 0) {
         this.setState({ measuredDistanceValue: mVal });
       } else {
         this.setState({ measuredDistanceValue: nVal });
       }
+
+      this.setState({ measureDistanceBtnDisabled: false });
     });
   }
 
@@ -92,7 +98,8 @@ class MagneticEncoderAlignment extends React.Component {
               <div className="py-2 px-1">OUT OF RANGE</div>
             </div>
           </div>
-          <button type="button" className="btn btn-primary mt-3" onClick={this.handleMeasureDistance}>MEASURE DISTANCE</button>
+          <button type="button" className="btn btn-primary mt-3"
+            onClick={this.handleMeasureDistance} disabled={this.state.measureDistanceBtnDisabled}>MEASURE DISTANCE</button>
         </div>
       </div>
     );

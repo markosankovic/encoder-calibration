@@ -1,8 +1,8 @@
 import { MotionMasterClient } from '@synapticon/motion-master-client';
 import { ipcRenderer } from 'electron';
 import Long from 'long';
-import { BehaviorSubject, concat, Subject } from 'rxjs';
-import { first, last, map } from 'rxjs/operators';
+import { BehaviorSubject, Subject, of } from 'rxjs';
+import { first, map, mergeMap } from 'rxjs/operators';
 
 const input$ = new Subject();
 const output$ = new Subject();
@@ -43,7 +43,14 @@ export function getDeviceInfo(observer) {
 export function getDeviceParameterValue(deviceAddress, parameter) {
   return motionMasterClient.requestGetDeviceParameterValues(deviceAddress, [parameter]).pipe(
     first(),
-    map(deviceParameterValues => deviceParameterValues ? deviceParameterValues.parameterValues[0] : null),
+    map(deviceParameterValues => {
+      if (deviceParameterValues) {
+        if (deviceParameterValues.parameterValues && deviceParameterValues.parameterValues.length > 0) {
+          return deviceParameterValues.parameterValues[0];
+        }
+      }
+      return null;
+    }),
   );
 }
 
@@ -52,20 +59,18 @@ export function setDeviceParameterValue(deviceAddress, parameter) {
 }
 
 export function getBiSSRegisterValue(deviceAddress, registerAddress) {
-  return concat(
-    setDeviceParameterValue(deviceAddress, { index: 0x2800, subindex: 2, intValue: 0 }),
-    setDeviceParameterValue(deviceAddress, { index: 0x2800, subindex: 3, uintValue: registerAddress }),
-    setDeviceParameterValue(deviceAddress, { index: 0x2800, subindex: 1, intValue: 0 }),
-    setDeviceParameterValue(deviceAddress, { index: 0x2800, subindex: 1, intValue: 1 }),
-    getDeviceParameterValue(deviceAddress, { index: 0x2800, subindex: 5 }),
-  ).pipe(
-    last(),
+  return of(1).pipe(
+    mergeMap(() => setDeviceParameterValue(deviceAddress, { index: 0x2800, subindex: 2, intValue: 0 })),
+    mergeMap(() => setDeviceParameterValue(deviceAddress, { index: 0x2800, subindex: 3, intValue: registerAddress })),
+    mergeMap(() => setDeviceParameterValue(deviceAddress, { index: 0x2800, subindex: 1, intValue: 0 })),
+    mergeMap(() => setDeviceParameterValue(deviceAddress, { index: 0x2800, subindex: 1, intValue: 1 })),
+    mergeMap(() => getDeviceParameterValue(deviceAddress, { index: 0x2800, subindex: 5 })),
     map(parameter => {
-      if (parameter.intValue) {
+      if (parameter && parameter.success) {
         const longValue = new Long(parameter.intValue.low, parameter.intValue.high, parameter.intValue.unsigned);
         return longValue.toInt();
       } else {
-        console.error(`Error reading 0x2008:5. There is no intValue on this parameter.`, parameter.error);
+        console.error('Cannot read BiSS encoder register value', parameter);
         return 0;
       }
     })
