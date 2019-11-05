@@ -1,7 +1,7 @@
 import React from 'react';
 import { Subscription, zip } from 'rxjs';
 import optimum from './optimum.svg';
-import { calcAcGain, calcAfGain, getBiSSRegisterValue } from './MotionMasterService';
+import { calcAcGain, calcAfGain, furtherFromValue, getBiSSRegisterValue } from './MotionMasterService';
 
 class MagneticEncoderAlignment extends React.Component {
 
@@ -42,7 +42,11 @@ class MagneticEncoderAlignment extends React.Component {
       const nVal = afGainN * acGainN;
       console.info(`acGainN: ${afGainN}, acGainN: ${acGainN}, nVal: ${nVal}`);
 
-      this.setState({ measuredDistanceValue: mVal });
+      if (furtherFromValue(mVal, nVal, 58.5) >= 0) {
+        this.setState({ measuredDistanceValue: mVal });
+      } else {
+        this.setState({ measuredDistanceValue: nVal });
+      }
     });
   }
 

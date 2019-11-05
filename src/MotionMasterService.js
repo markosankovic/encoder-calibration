@@ -89,4 +89,16 @@ export function calcAfGain(val) {
   }
 }
 
+export function furtherFromValue(a, b, value) {
+  const aDiff = Math.abs(value - a);
+  const bDiff = Math.abs(value - b);
+  if (aDiff > bDiff) {
+    return 1;
+  } else if (aDiff < bDiff) {
+    return -1;
+  } else {
+    return 0;
+  }
+}
+
 ipcRenderer.on('motion-master-alive', (_event, alive) => alive$.next(alive));
