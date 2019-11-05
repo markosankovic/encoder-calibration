@@ -1,0 +1,41 @@
+.arrow_box {
+  position: relative;
+  background: #88b7d5;
+  border: 2px solid #7aa4bf;
+}
+.arrow_box:after,
+.arrow_box:before {
+  top: 100%;
+  left: 50%;
+  border: solid transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+}
+
+.arrow_box:after {
+  border-color: rgba(136, 183, 213, 0);
+  border-top-color: #88b7d5;
+  border-width: 16px;
+  margin-left: -16px;
+}
+.arrow_box:before {
+  border-color: rgba(194, 225, 245, 0);
+  border-top-color: #7aa4bf;
+  border-width: 19px;
+  margin-left: -19px;
+}
+
+.measuredValueBox {
+  color: white;
+  width: 100px;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  font-size: 1.4rem;
+  text-align: center;
+  font-weight: bold;
+  transition: left 1000ms ease;
+  box-shadow: 4px 4px 1px 1px rgba(0, 0, 0, 0.115);
+}

@@ -66,15 +66,18 @@ class MagneticEncoderAlignment extends React.Component {
     const optimalStyle = { width: '23%', backgroundColor: '#94c47f' }; // 23.539
     const tooFarStyle = { width: '36%', backgroundColor: '#ffe59d' }; // 35.836
     const outOfRangeStyle = { width: '32%', backgroundColor: '#e99a9b' }; // 31.137
+    const measuredDistanceBoxStyle = { left: `calc(${this.state.measuredDistanceValue / 284.625 * 100}% - 50px)` };
+    // const measuredDistanceBoxStyle = { left: `calc(${Math.random() * 100}% - 50px)` };
 
     return (
       <div>
         <h5>Magnetic Encoder Alignment</h5>
         <p>To achieve the best result the magnetic disc must be mounted in the optimum distance to the sensor chip.</p>
         <img src={optimum} alt="Optimum distance to the sensor chip" />
-        <div className="mt-3">
-          <p><strong>Measured distance</strong>: <span>{this.state.measuredDistanceValue}</span></p>
-          <input type="range" className="w-100" name="measuredDistance" value={this.state.measuredDistanceValue} readOnly min="0" max="250" />
+        <div className="mt-3 px-4">
+          <div className="position-relative mb-2">
+            <div className="arrow_box measuredValueBox" style={measuredDistanceBoxStyle}>{this.state.measuredDistanceValue}</div>
+          </div>
           <div className="d-flex text-center w-100 mt-1">
             <div style={tooCloseStyle}>
               <div className="py-2 px-1">TOO CLOSE</div>
