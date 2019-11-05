@@ -1,6 +1,6 @@
 {
   "name": "encoder-calibration",
-  "version": "0.1.1-alpha.1",
+  "version": "0.1.1-alpha.2",
   "description": "Evaluation tool to know if the Circulo encoder disc is at the correct distance from the sensor.",
   "private": false,
   "repository": {
