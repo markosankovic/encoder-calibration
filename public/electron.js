@@ -131,7 +131,7 @@ function connect(endpoints) {
   }
 
   serverSocket.connect(endpoints.serverEndpoint);
-  notificationSocket.connect(endpoints.notificationEndpoint);
+  // notificationSocket.connect(endpoints.notificationEndpoint);
 
   prevEndpoints = endpoints;
   saveEndpoints(endpointsPath, endpoints);
@@ -140,7 +140,7 @@ function connect(endpoints) {
 function disconnect(endpoints) {
   try {
     serverSocket.disconnect(endpoints.serverEndpoint);
-    notificationSocket.disconnect(endpoints.notificationEndpoint);
+    // notificationSocket.disconnect(endpoints.notificationEndpoint);
     prevEndpoints = null;
   } catch (err) {
     console.warn(`Already disconnected: ${err.message}`);

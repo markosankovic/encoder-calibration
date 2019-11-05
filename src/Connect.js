@@ -77,11 +77,11 @@ class Connect extends React.Component {
             <input type="text" className="form-control" placeholder="Server Endpoint" title="Server Endpoint"
               value={this.state.serverEndpoint} onChange={this.handleServerEndpointChange} />
           </div>
-          <div className="col-auto">
+          {/* <div className="col-auto">
             <label className="sr-only">Notification Endpoint</label>
             <input type="text" className="form-control" placeholder="Notification Endpoint" title="Notification Endpoint"
               value={this.state.notificationEndpoint} onChange={this.handleNotificationEndpointChange} />
-          </div>
+          </div> */}
           <div className="col-auto">
             <button type="submit" className="btn btn-success">CONNECT</button>
           </div>
