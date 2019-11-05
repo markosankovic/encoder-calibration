@@ -74,7 +74,7 @@ class MagneticEncoderAlignment extends React.Component {
         <h5>Magnetic Encoder Alignment</h5>
         <p>To achieve the best result the magnetic disc must be mounted in the optimum distance to the sensor chip.</p>
         <img src={optimum} alt="Optimum distance to the sensor chip" />
-        <div className="mt-3 px-4">
+        <div className="mt-3 px-5">
           <div className="position-relative mb-2">
             <div className="arrow_box measuredValueBox" style={measuredDistanceBoxStyle}>{this.state.measuredDistanceValue}</div>
           </div>
