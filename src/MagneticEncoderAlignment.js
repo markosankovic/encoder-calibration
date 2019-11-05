@@ -76,7 +76,7 @@ class MagneticEncoderAlignment extends React.Component {
         <img src={optimum} alt="Optimum distance to the sensor chip" />
         <div className="mt-3 px-5">
           <div className="position-relative mb-2">
-            <div className="arrow_box measuredValueBox" style={measuredDistanceBoxStyle}>{this.state.measuredDistanceValue}</div>
+            <div className="arrow_box measuredValueBox" style={measuredDistanceBoxStyle}>{this.state.measuredDistanceValue.toFixed(2)}</div>
           </div>
           <div className="d-flex text-center w-100 mt-1">
             <div style={tooCloseStyle}>
