@@ -1,8 +1,10 @@
 import React from 'react';
 import { Subscription } from 'rxjs';
 import { map, mergeMap } from 'rxjs/operators';
+
 import optimum from './optimum.svg';
-import { calcAcGain, calcAfGain, furtherFromValue, getBiSSRegisterValue } from './MotionMasterService';
+import { getBiSSRegisterValue } from './MotionMasterService';
+import { calcAcGain, calcAfGain, furtherFromValue } from './util';
 
 class MagneticEncoderAlignment extends React.Component {
 
