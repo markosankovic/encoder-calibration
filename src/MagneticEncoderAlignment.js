@@ -75,7 +75,6 @@ class MagneticEncoderAlignment extends React.Component {
     const tooFarStyle = { width: '36%', backgroundColor: '#ffe59d' }; // 35.836
     const outOfRangeStyle = { width: '32%', backgroundColor: '#e99a9b' }; // 31.137
     const measuredDistanceBoxStyle = { left: `calc(${this.state.measuredDistanceValue / 284.625 * 100}% - 48px)` };
-    // const measuredDistanceBoxStyle = { left: `calc(${Math.random() * 100}% - 50px)` };
 
     return (
       <div>
