@@ -882,10 +882,17 @@
   dependencies:
     regenerator-runtime "^0.13.2"
 
-"@babel/runtime@^7.0.0", "@babel/runtime@^7.3.4", "@babel/runtime@^7.4.2", "@babel/runtime@^7.4.5", "@babel/runtime@^7.6.3":
+"@babel/runtime@^7.0.0", "@babel/runtime@^7.3.4", "@babel/runtime@^7.4.2", "@babel/runtime@^7.4.5":
   version "7.7.1"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.7.1.tgz#b223497bbfbcbbb38116673904debc71470ca528"
   integrity sha512-SQ0sS7KUJDvgCI2cpZG0nJygO6002oTbhgSuw4WcocsnbxLwL5Q8I3fqbJdyBAc3uFrWZiR2JomseuxSuci3SQ==
+  dependencies:
+    regenerator-runtime "^0.13.2"
+
+"@babel/runtime@^7.6.3":
+  version "7.7.2"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.7.2.tgz#111a78002a5c25fc8e3361bedc9529c696b85a6a"
+  integrity sha512-JONRbXbTXc9WQE2mAZd1p0Z3DZ/6vaQIkgYMSTP3KjRCyd7rCZCcfhCyX+YjwcKxcZ82UrxbRD358bpExNgrjw==
   dependencies:
     regenerator-runtime "^0.13.2"
 
@@ -1352,12 +1359,12 @@
     "@svgr/plugin-svgo" "^4.3.1"
     loader-utils "^1.2.3"
 
-"@synapticon/motion-master-client@^1.1.3":
-  version "1.1.3"
-  resolved "https://registry.yarnpkg.com/@synapticon/motion-master-client/-/motion-master-client-1.1.3.tgz#64a2c117ed61d0c16c4c591c4e6a05fff5cf08ec"
-  integrity sha512-HBRvfg3xvmZNCx4ps4wISHnyoQg7Wx+mCLct6JcXQETZrj23uFbZvWaOAZBbRE415lMw2JyKwJfhu/Dh1VwjsQ==
+"@synapticon/motion-master-client@^1.3.0":
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/@synapticon/motion-master-client/-/motion-master-client-1.3.0.tgz#e6191c6c61b0102e57d0ba56e223d6f5fe40476d"
+  integrity sha512-qLwTApcuu+QjWv4+We+v29dZq7CImqWJSTIIQELayqcAPFvwdrBaJna4sxzhuOWnozWYg23pmDxdjsu2QCicFw==
   dependencies:
-    "@synapticon/motion-master-proto" "^3.0.0-beta.6"
+    "@synapticon/motion-master-proto" "^3.0.0-beta.9"
     commander "^2.20.0"
     debug "^4.1.1"
     rxjs "^6.5.2"
@@ -1365,10 +1372,10 @@
     yaml "^1.6.0"
     zeromq "^5.1.1"
 
-"@synapticon/motion-master-proto@^3.0.0-beta.6":
-  version "3.0.0-beta.6"
-  resolved "https://registry.yarnpkg.com/@synapticon/motion-master-proto/-/motion-master-proto-3.0.0-beta.6.tgz#7d358b213800eedbc4535e6ba33cebda9b06e413"
-  integrity sha512-0jSEuTtEnCXAlk97pIrZlESX+Tyc9Q45B0JbhgyyYaaDu/U8Ou9Jg6paO+Ov8AsfuwXCYPux10qzY4rE6Mcb4w==
+"@synapticon/motion-master-proto@^3.0.0-beta.9":
+  version "3.0.0-beta.9"
+  resolved "https://registry.yarnpkg.com/@synapticon/motion-master-proto/-/motion-master-proto-3.0.0-beta.9.tgz#eaa6fea4003fb0783b2cf6f2bb60bb5f51d940fd"
+  integrity sha512-MRqmDKQZIXyx4GbhntYTAhd5OYyo2gtY8PhhN96Fde4dvUxWimM6y7mRTgh52TIe3VDsnMI9mI5bLeVP7TLXUA==
   dependencies:
     protobufjs "^6.8.8"
 
@@ -1452,7 +1459,12 @@
   resolved "https://registry.yarnpkg.com/@types/long/-/long-4.0.0.tgz#719551d2352d301ac8b81db732acb6bdc28dbdef"
   integrity sha512-1w52Nyx4Gq47uuu0EVcsHBxZFJgurQ+rTKS3qMHxR1GY2T8c2AJYd6vZoZ9q1rupaDjU0yT+Jc2XTyXkjeMA+Q==
 
-"@types/node@^10.1.0", "@types/node@^10.12.18":
+"@types/node@^10.1.0":
+  version "10.17.5"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-10.17.5.tgz#c1920150f7b90708a7d0f3add12a06bc9123c055"
+  integrity sha512-RElZIr/7JreF1eY6oD5RF3kpmdcreuQPjg5ri4oQ5g9sq7YWU8HkfB3eH8GwAwxf5OaCh0VPi7r4N/yoTGelrA==
+
+"@types/node@^10.12.18":
   version "10.17.3"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-10.17.3.tgz#65a8d9a6a0f6af55595a2d0020617959130d6495"
   integrity sha512-QZ9CjUB3QoA3f2afw3utKlfRPhpmufB7jC2+oDhLWnXqoyx333fhKSQDLQu2EK7OE0a15X67eYiRAaJsHXrpMA==
@@ -5761,6 +5773,11 @@ is-directory@^0.3.1:
   version "0.3.1"
   resolved "https://registry.yarnpkg.com/is-directory/-/is-directory-0.3.1.tgz#61339b6f2475fc772fd9c9d83f5c8575dc154ae1"
   integrity sha1-YTObbyR1/Hcv2cnYP1yFddwVSuE=
+
+is-electron@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/is-electron/-/is-electron-2.2.0.tgz#8943084f09e8b731b3a7a0298a7b5d56f6b7eef0"
+  integrity sha512-SpMppC2XR3YdxSzczXReBjqs2zGscWQpBIKqwXYBFic0ERaxNVgwLCHwOLZeESfdJQjX0RDvrJ1lBXX2ij+G1Q==
 
 is-extendable@^0.1.0, is-extendable@^0.1.1:
   version "0.1.1"

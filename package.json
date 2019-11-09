@@ -8,8 +8,9 @@
     "url": "https://github.com/markosankovic/encoder-calibration.git"
   },
   "dependencies": {
-    "@synapticon/motion-master-client": "^1.1.3",
+    "@synapticon/motion-master-client": "^1.3.0",
     "electron-is-dev": "^1.1.0",
+    "is-electron": "^2.2.0",
     "long": "^4.0.0",
     "react": "^16.11.0",
     "react-dom": "^16.11.0",

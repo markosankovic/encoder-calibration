@@ -1,11 +1,17 @@
 import React from 'react';
 import { BehaviorSubject } from 'rxjs';
-import { alive$ } from './MotionMasterService';
+import isElectron from 'is-electron';
+
 import './App.css';
 import Connect from './Connect';
 import Footer from './Footer';
 import Device from './Device';
 import MagneticEncoderAlignment from './MagneticEncoderAlignment';
+import motionMasterClient from './motionMasterClient';
+import { zmqBind } from './zmq';
+import { wssBind } from './wss';
+
+isElectron() ? zmqBind() : wssBind();
 
 window.deviceAddress$ = new BehaviorSubject(0);
 
@@ -19,28 +25,32 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    alive$.subscribe(alive => this.setState({ alive }));
+    motionMasterClient.alive$.subscribe(alive => this.setState({ alive }));
   }
 
   render() {
 
-    const magneticEncoderAlignment = this.state.alive
-      ? (
-        <div className="row">
-          <div className="col">
-            <MagneticEncoderAlignment></MagneticEncoderAlignment>
-          </div>
+    const connect = isElectron() ? (
+      <div className="row py-3 mb-3 bg-white border-bottom">
+        <div className="col">
+          <Connect></Connect>
         </div>
-      ) : null;
+      </div>
+    ) : null;
+
+
+    const magneticEncoderAlignment = this.state.alive ? (
+      <div className="row">
+        <div className="col">
+          <MagneticEncoderAlignment></MagneticEncoderAlignment>
+        </div>
+      </div>
+    ) : null;
 
     return (
       <div className="container-fluid">
 
-        <div className="row py-3 mb-3 bg-white border-bottom">
-          <div className="col">
-            <Connect></Connect>
-          </div>
-        </div>
+        {connect}
 
         <div className="row">
           <div className="col">

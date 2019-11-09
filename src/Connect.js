@@ -1,7 +1,9 @@
 import React from 'react';
 import fs from 'fs';
 import { remote } from 'electron';
-import { alive$, connect, disconnect, getSystemVersion } from './MotionMasterService';
+
+import { zmqConnect, zmqDisconnect } from './zmq';
+import motionMasterClient from './motionMasterClient';
 
 class Connect extends React.Component {
 
@@ -39,10 +41,10 @@ class Connect extends React.Component {
       }
     });
 
-    alive$.subscribe(alive => {
+    motionMasterClient.alive$.subscribe(alive => {
       this.setState({ alive })
       if (alive) {
-        getSystemVersion(systemVersion => this.setState({ systemVersion: systemVersion.version }));
+        motionMasterClient.getSystemVersion(systemVersion => this.setState({ systemVersion: systemVersion.version }));
       }
     });
   }
@@ -56,12 +58,12 @@ class Connect extends React.Component {
   }
 
   handleSubmit(event) {
-    connect(this.state);
+    zmqConnect(this.state);
     event.preventDefault();
   }
 
   handleDisconnect() {
-    disconnect(this.state);
+    zmqDisconnect(this.state);
   }
 
   render() {
