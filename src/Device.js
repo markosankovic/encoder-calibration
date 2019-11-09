@@ -14,22 +14,14 @@ class Device extends React.Component {
     };
 
     this.handleDeviceAddressChange = this.handleDeviceAddressChange.bind(this);
+    this.handleReloadDevicesClick = this.handleReloadDevicesClick.bind(this);
   }
 
   componentDidMount() {
     motionMasterClient.alive$.subscribe(alive => {
       this.setState({ alive });
       if (alive) {
-        motionMasterClient.getDeviceInfo(deviceInfo => {
-          const devices = deviceInfo.devices;
-          if (devices && devices.length > 0) {
-            const selectedDeviceAddress = devices[0].deviceAddress;
-            this.setState({ devices, selectedDeviceAddress });
-            this.updateManufacturerSoftwareVersion(selectedDeviceAddress);
-          } else {
-            this.setState({ devices: [], selectedDeviceAddress: null, manufacturerSofwareVersion: '' });
-          }
-        });
+        this.getDeviceInfo();
       } else {
         this.setState({ devices: [], selectedDeviceAddress: null, manufacturerSofwareVersion: '' });
       }
@@ -38,6 +30,23 @@ class Device extends React.Component {
 
   componentDidUpdate() {
     window.deviceAddress$.next(this.state.selectedDeviceAddress);
+  }
+
+  handleReloadDevicesClick() {
+    this.getDeviceInfo();
+  }
+
+  getDeviceInfo() {
+    motionMasterClient.getDeviceInfo(deviceInfo => {
+      const devices = deviceInfo.devices;
+      if (devices && devices.length > 0) {
+        const selectedDeviceAddress = devices[0].deviceAddress;
+        this.setState({ devices, selectedDeviceAddress });
+        this.updateManufacturerSoftwareVersion(selectedDeviceAddress);
+      } else {
+        this.setState({ devices: [], selectedDeviceAddress: null, manufacturerSofwareVersion: '' });
+      }
+    });
   }
 
   handleDeviceAddressChange(event) {
@@ -71,8 +80,9 @@ class Device extends React.Component {
     if (this.state.devices.length === 0) {
       return (
         <div>
-          <div className="alert alert-warning mb-0 border" role="alert">
-            You must <strong>connect devices</strong> before using this tool.
+          <div className="alert alert-warning border d-flex align-items-center" role="alert">
+            <span>You must <strong>connect devices</strong> before using this tool.</span>
+            <button className="btn btn-outline-primary ml-3" onClick={this.handleReloadDevicesClick}>RELOAD DEVICES</button>
           </div>
           <hr />
         </div>
