@@ -3,7 +3,7 @@ import React from 'react';
 function Footer() {
   return (
     <div>
-      Running Node.js {process.versions.node}, Chrome {process.versions.chrome}, and Electron {process.versions.electron}.
+      © 2019 Synapticon GmbH – Robotic Control Systems. All Rights Reserved.
     </div>
   );
 }
