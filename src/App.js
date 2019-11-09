@@ -1,6 +1,5 @@
 import React from 'react';
 import { BehaviorSubject } from 'rxjs';
-import isElectron from 'is-electron';
 
 import './App.css';
 import Connect from './Connect';
@@ -9,9 +8,8 @@ import Device from './Device';
 import MagneticEncoderAlignment from './MagneticEncoderAlignment';
 import motionMasterClient from './motionMasterClient';
 import { zmqBind } from './zmq';
-import { wssBind } from './wss';
 
-isElectron() ? zmqBind() : wssBind();
+zmqBind();
 
 window.deviceAddress$ = new BehaviorSubject(0);
 
@@ -30,15 +28,6 @@ class App extends React.Component {
 
   render() {
 
-    const connect = isElectron() ? (
-      <div className="row py-3 mb-3 bg-white border-bottom">
-        <div className="col">
-          <Connect></Connect>
-        </div>
-      </div>
-    ) : null;
-
-
     const magneticEncoderAlignment = this.state.alive ? (
       <div className="row">
         <div className="col">
@@ -50,7 +39,11 @@ class App extends React.Component {
     return (
       <div className="container-fluid">
 
-        {connect}
+        <div className="row py-3 mb-3 bg-white border-bottom">
+          <div className="col">
+            <Connect></Connect>
+          </div>
+        </div>
 
         <div className="row">
           <div className="col">
