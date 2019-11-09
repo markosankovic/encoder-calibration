@@ -21,11 +21,14 @@
   },
   "main": "public/electron.js",
   "scripts": {
-    "start": "rescripts start",
-    "build": "rescripts build",
-    "test": "rescripts test",
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "electron-dev": "concurrently \"BROWSER=none yarn start\" \"wait-on http://localhost:3000 && electron .\"",
+    "electron-start": "rescripts start",
+    "electron-dev": "concurrently \"BROWSER=none yarn electron-start\" \"wait-on http://localhost:3000 && electron .\"",
+    "electron-build": "rescripts build",
+    "electron-test": "rescripts test",
     "postinstall": "electron-builder install-app-deps",
     "preelectron-pack": "yarn build",
     "electron-pack": "electron-builder -l"
