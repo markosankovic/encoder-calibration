@@ -54,9 +54,6 @@ class MotionMasterClientExtended extends MotionMasterClient {
 
 }
 
-const input$ = new Subject();
-const output$ = new Subject();
-const notification$ = new Subject();
-const motionMasterClient = new MotionMasterClientExtended(input$, output$, notification$);
+const motionMasterClient = new MotionMasterClientExtended();
 
 export default motionMasterClient;
