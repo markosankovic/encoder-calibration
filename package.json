@@ -2,13 +2,15 @@
   "name": "encoder-calibration",
   "version": "0.1.1-beta.2",
   "description": "Evaluation tool to know if the Circulo encoder disc is at the correct distance from the sensor.",
+  "author": "Marko Sanković <msankovic@synapticon.com> (https://github.com/markosankovic)",
+  "license": "ISC",
   "private": false,
   "repository": {
     "type": "git",
     "url": "https://github.com/markosankovic/encoder-calibration.git"
   },
   "dependencies": {
-    "@synapticon/motion-master-client": "^1.3.0",
+    "@synapticon/motion-master-client": "^1.3.1",
     "long": "^4.0.0",
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
@@ -20,14 +22,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "electron-start": "rescripts start",
-    "electron-dev": "concurrently \"BROWSER=none yarn electron-start\" \"wait-on http://localhost:3000 && electron .\"",
-    "electron-build": "rescripts build",
-    "electron-test": "rescripts test",
-    "postinstall": "electron-builder install-app-deps",
-    "preelectron-pack": "yarn build",
-    "electron-pack": "electron-builder -l"
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -43,29 +38,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "devDependencies": {},
-  "homepage": "./",
-  "author": "Marko Sanković <msankovic@synapticon.com> (https://github.com/markosankovic)",
-  "license": "ISC",
-  "build": {
-    "appId": "com.synapticon.encoder-calibration",
-    "productName": "EncoderCalibration",
-    "copyright": "Copyright © 2019 ${author}",
-    "linux": {
-      "executableName": "encoder-calibration",
-      "artifactName": "encoder-calibration-${version}.${ext}",
-      "category": "Utilities"
-    },
-    "mac": {
-      "category": "public.app-category.utilities"
-    },
-    "files": [
-      "build/**/*",
-      "node_modules/**/*"
-    ],
-    "directories": {
-      "buildResources": "assets"
-    }
   }
 }
