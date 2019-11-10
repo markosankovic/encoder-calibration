@@ -1277,10 +1277,10 @@
     "@svgr/plugin-svgo" "^4.3.1"
     loader-utils "^1.2.3"
 
-"@synapticon/motion-master-client@^1.4.1-beta.0":
-  version "1.4.1-beta.0"
-  resolved "https://registry.yarnpkg.com/@synapticon/motion-master-client/-/motion-master-client-1.4.1-beta.0.tgz#21f790738d32ee0bd999ddecaf3b0b4c11dce410"
-  integrity sha512-3G18N2PBSMe2lLQscKeFnCtYciaZ21guibRF40bwUuFXwP6F/CGlZeRcd1uIBuJUnGcNROJO2tUX05pyMuo0tA==
+"@synapticon/motion-master-client@^1.5.0":
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/@synapticon/motion-master-client/-/motion-master-client-1.5.0.tgz#dc7d6dbdf24f6b598cfd3d1406baa3d8a39dfb4c"
+  integrity sha512-lE97wNPj5p3TRWyluR8YFxEbCSbKuI1fpZt0jfKboeAXZpk0i0K79ANrDuTkoMplzoHIc1TZcur163LBfEUo3w==
   dependencies:
     "@synapticon/motion-master-proto" "^3.0.0-beta.9"
     commander "^2.20.0"

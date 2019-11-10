@@ -58,6 +58,6 @@ export function getBiSSRegisterValue(deviceAddress, registerAddress) {
 motionMasterClientWebSocketConnection.open();
 
 export const motionMasterNotificationWebSocketConnection = new MotionMasterNotificationWebSocketConnection();
-motionMasterNotificationWebSocketConnection.open();
+motionMasterNotificationWebSocketConnection.subscribe('notification', 1);
 export const motionMasterNotifcation = motionMasterNotificationWebSocketConnection.notification;
 export const systemEvent$ = motionMasterNotifcation.systemEvent$;
