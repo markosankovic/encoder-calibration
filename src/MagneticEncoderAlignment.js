@@ -22,9 +22,7 @@ class MagneticEncoderAlignment extends React.Component {
   }
 
   componentDidMount() {
-    this.deviceAddressSubscription = window.deviceAddress$.subscribe(deviceAddress => {
-      this.setState({ deviceAddress });
-    });
+    this.deviceAddressSubscription = window.deviceAddress$.subscribe(deviceAddress => this.setState({ deviceAddress }));
   }
 
   componentWillUnmount() {

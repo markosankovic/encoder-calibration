@@ -88,10 +88,9 @@ class Device extends React.Component {
     if (this.state.devices.length === 0) {
       return (
         <div>
-          <div className="alert alert-warning border" role="alert">
+          <div className="alert alert-warning mb-0 border" role="alert">
             <span>You must <strong>connect devices</strong> before using this tool.</span>
           </div>
-          <hr />
         </div>
       );
     }
@@ -108,7 +107,6 @@ class Device extends React.Component {
           </select>
           <div className="ml-2">{this.state.manufacturerSofwareVersion}</div>
         </form>
-        <hr></hr>
       </div>
     );
   };

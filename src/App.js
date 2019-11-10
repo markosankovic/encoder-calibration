@@ -1,12 +1,13 @@
 import React from 'react';
 import { BehaviorSubject } from 'rxjs';
+import { MotionMasterMessage } from '@synapticon/motion-master-client';
 
 import './App.css';
 import Footer from './Footer';
 import Device from './Device';
 import MagneticEncoderAlignment from './MagneticEncoderAlignment';
 import { alive$, systemEvent$ } from './motionMasterClient';
-import { MotionMasterMessage } from '@synapticon/motion-master-client';
+import { NarrowAngleCalibration } from './NarrowAngleCalibration';
 
 window.deviceAddress$ = new BehaviorSubject(0);
 
@@ -44,6 +45,14 @@ class App extends React.Component {
       </div>
     ) : null;
 
+    const narrowAngleCalibration = this.state.alive ? (
+      <div className="row">
+        <div className="col">
+          <NarrowAngleCalibration></NarrowAngleCalibration>
+        </div>
+      </div>
+    ) : null;
+
     return (
       <div className="container-fluid">
         <div className="row mt-3">
@@ -53,11 +62,18 @@ class App extends React.Component {
           </div>
         </div>
 
+        <hr />
+
         {magneticEncoderAlignment}
+
+        <hr />
+
+        {narrowAngleCalibration}
+
+        <hr />
 
         <div className="row mb-3">
           <div className="col">
-            <hr />
             <Footer></Footer>
           </div>
         </div>
