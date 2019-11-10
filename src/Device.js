@@ -4,7 +4,9 @@ import {
   alive$,
   getDeviceInfo,
   getDeviceParameterValue,
+  systemEvent$,
 } from './motionMasterClient';
+import { MotionMasterMessage } from '@synapticon/motion-master-client';
 
 class Device extends React.Component {
 
@@ -18,7 +20,6 @@ class Device extends React.Component {
     };
 
     this.handleDeviceAddressChange = this.handleDeviceAddressChange.bind(this);
-    this.handleReloadDevicesClick = this.handleReloadDevicesClick.bind(this);
   }
 
   componentDidMount() {
@@ -30,14 +31,18 @@ class Device extends React.Component {
         this.setState({ devices: [], selectedDeviceAddress: null, manufacturerSofwareVersion: '' });
       }
     });
+
+    systemEvent$.subscribe(systemEvent => {
+      if (systemEvent.state === MotionMasterMessage.Status.SystemEvent.State.INITIALIZED) {
+        this.getDeviceInfo();
+      } else if (systemEvent.state === MotionMasterMessage.Status.SystemEvent.State.DEINITIALIZED) {
+        this.setState({ devices: [], selectedDeviceAddress: null, manufacturerSofwareVersion: '' });
+      }
+    });
   }
 
   componentDidUpdate() {
     window.deviceAddress$.next(this.state.selectedDeviceAddress);
-  }
-
-  handleReloadDevicesClick() {
-    this.getDeviceInfo();
   }
 
   getDeviceInfo() {
@@ -84,9 +89,8 @@ class Device extends React.Component {
     if (this.state.devices.length === 0) {
       return (
         <div>
-          <div className="alert alert-warning border d-flex align-items-center" role="alert">
+          <div className="alert alert-warning border" role="alert">
             <span>You must <strong>connect devices</strong> before using this tool.</span>
-            <button className="btn btn-outline-primary ml-3" onClick={this.handleReloadDevicesClick}>RELOAD DEVICES</button>
           </div>
           <hr />
         </div>

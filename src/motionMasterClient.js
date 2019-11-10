@@ -1,4 +1,7 @@
-import { MotionMasterClientWebSocketConnection } from '@synapticon/motion-master-client';
+import {
+  MotionMasterClientWebSocketConnection,
+  MotionMasterNotificationWebSocketConnection,
+} from '@synapticon/motion-master-client';
 import Long from 'long';
 import { of } from 'rxjs';
 import { first, map, mergeMap } from 'rxjs/operators';
@@ -53,3 +56,8 @@ export function getBiSSRegisterValue(deviceAddress, registerAddress) {
 }
 
 motionMasterClientWebSocketConnection.open();
+
+export const motionMasterNotificationWebSocketConnection = new MotionMasterNotificationWebSocketConnection();
+motionMasterNotificationWebSocketConnection.open();
+export const motionMasterNotifcation = motionMasterNotificationWebSocketConnection.notification;
+export const systemEvent$ = motionMasterNotifcation.systemEvent$;
