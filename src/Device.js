@@ -1,6 +1,10 @@
 import React from 'react';
 
-import motionMasterClient from './motionMasterClient';
+import {
+  alive$,
+  getDeviceInfo,
+  getDeviceParameterValue,
+} from './motionMasterClient';
 
 class Device extends React.Component {
 
@@ -18,7 +22,7 @@ class Device extends React.Component {
   }
 
   componentDidMount() {
-    motionMasterClient.alive$.subscribe(alive => {
+    alive$.subscribe(alive => {
       this.setState({ alive });
       if (alive) {
         this.getDeviceInfo();
@@ -37,7 +41,7 @@ class Device extends React.Component {
   }
 
   getDeviceInfo() {
-    motionMasterClient.getDeviceInfo(deviceInfo => {
+    getDeviceInfo(deviceInfo => {
       const devices = deviceInfo.devices;
       if (devices && devices.length > 0) {
         const selectedDeviceAddress = devices[0].deviceAddress;
@@ -56,7 +60,7 @@ class Device extends React.Component {
   }
 
   updateManufacturerSoftwareVersion(deviceAddress) {
-    motionMasterClient.getDeviceParameterValue(deviceAddress, { index: 0x100A, subindex: 0 }).subscribe(parameter => {
+    getDeviceParameterValue(deviceAddress, { index: 0x100A, subindex: 0 }).subscribe(parameter => {
       if (parameter) {
         this.setState({ manufacturerSofwareVersion: parameter.stringValue });
       } else {

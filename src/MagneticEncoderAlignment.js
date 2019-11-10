@@ -4,7 +4,7 @@ import { map, mergeMap } from 'rxjs/operators';
 
 import optimum from './optimum.svg';
 import { calcAcGain, calcAfGain, furtherFromValue } from './util';
-import motionMasterClient from './motionMasterClient';
+import { getBiSSRegisterValue } from './motionMasterClient';
 
 class MagneticEncoderAlignment extends React.Component {
 
@@ -33,8 +33,8 @@ class MagneticEncoderAlignment extends React.Component {
 
   handleMeasureDistance() {
     this.setState({ measureDistanceBtnDisabled: true });
-    motionMasterClient.getBiSSRegisterValue(this.state.deviceAddress, 0x2B).pipe(
-      mergeMap(reg1 => motionMasterClient.getBiSSRegisterValue(this.state.deviceAddress, 0x2F).pipe(
+    getBiSSRegisterValue(this.state.deviceAddress, 0x2B).pipe(
+      mergeMap(reg1 => getBiSSRegisterValue(this.state.deviceAddress, 0x2F).pipe(
         map(reg2 => [reg1, reg2]),
       ))
     ).subscribe(([reg1, reg2]) => {

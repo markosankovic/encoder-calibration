@@ -5,10 +5,7 @@ import './App.css';
 import Footer from './Footer';
 import Device from './Device';
 import MagneticEncoderAlignment from './MagneticEncoderAlignment';
-import motionMasterClient from './motionMasterClient';
-import { wssBind } from './wss';
-
-wssBind();
+import { alive$ } from './motionMasterClient';
 
 window.deviceAddress$ = new BehaviorSubject(0);
 
@@ -22,7 +19,7 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    motionMasterClient.alive$.subscribe(alive => this.setState({ alive }));
+    alive$.subscribe(alive => this.setState({ alive }));
   }
 
   render() {
