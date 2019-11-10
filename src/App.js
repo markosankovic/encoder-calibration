@@ -22,13 +22,19 @@ class App extends React.Component {
 
   componentDidMount() {
     alive$.subscribe(alive => this.setState({ alive }));
-
-    systemEvent$.subscribe(systemEvent => {
-      this.setState({ motionMasterState: MotionMasterMessage.Status.SystemEvent.State[systemEvent.state] });
-    });
+    systemEvent$.subscribe(systemEvent => this.setState({ motionMasterState: MotionMasterMessage.Status.SystemEvent.State[systemEvent.state] }));
   }
 
   render() {
+
+    const motionMasterState = this.state.motionMasterState ? (
+      <div>
+        <div className="alert alert-info mb-0 border" role="alert">
+          <strong>Motion Master State</strong>: {this.state.motionMasterState}
+        </div>
+        <hr />
+      </div>
+    ) : null;
 
     const magneticEncoderAlignment = this.state.alive ? (
       <div className="row">
@@ -40,13 +46,9 @@ class App extends React.Component {
 
     return (
       <div className="container-fluid">
-
         <div className="row mt-3">
           <div className="col">
-            <div className="alert alert-info mb-0 border" role="alert">
-              <strong>Motion Master State</strong>: {this.state.motionMasterState}
-            </div>
-            <hr />
+            {motionMasterState}
             <Device></Device>
           </div>
         </div>

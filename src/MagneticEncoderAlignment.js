@@ -61,11 +61,8 @@ class MagneticEncoderAlignment extends React.Component {
   render() {
     if (!this.state.deviceAddress) {
       return (
-        <div>
-          <div className="alert alert-warning mb-0 border" role="alert">
-            You must <strong>select a device</strong> before calibrating encoder.
-          </div>
-          <hr />
+        <div className="alert alert-warning mb-0 border" role="alert">
+          You must <strong>select a device</strong> before calibrating encoder.
         </div>
       );
     }

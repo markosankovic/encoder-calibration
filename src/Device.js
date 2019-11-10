@@ -42,7 +42,9 @@ class Device extends React.Component {
   }
 
   componentDidUpdate() {
-    window.deviceAddress$.next(this.state.selectedDeviceAddress);
+    if (window.deviceAddress$.getValue() !== this.state.selectedDeviceAddress) {
+      window.deviceAddress$.next(this.state.selectedDeviceAddress);
+    }
   }
 
   getDeviceInfo() {
@@ -77,11 +79,8 @@ class Device extends React.Component {
   render() {
     if (!this.state.alive) {
       return (
-        <div>
-          <div className="alert alert-warning mb-0 border" role="alert">
-            You must <strong>connect to Motion Master</strong> before using this tool.
-          </div>
-          <hr />
+        <div className="alert alert-warning mb-0 border" role="alert">
+          You must <strong>connect to Motion Master</strong> before using this tool.
         </div>
       );
     }
