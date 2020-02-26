@@ -63,7 +63,7 @@ export class NarrowAngleCalibration extends React.Component {
           {/* <button className="btn btn-primary" onClick={this.handleStartNarrowAngleCalibration}>START NARROW ANGLE CALIBRATION</button> */}
           <button className="btn btn-danger mr-2" onClick={this.handleQuickStop}>QUICK STOP</button>
           <button className="btn btn-primary mr-2" onClick={this.handleStartCalibrationProcedure}>START CALIBRATION PROCEDURE</button>
-          <span className="p-2">{JSON.stringify(this.state.calibrationProcedureStatus)}</span>
+          <span className="p-2"><code>{JSON.stringify(this.state.calibrationProcedureStatus)}</code></span>
         </div>
       </div>
     );
