@@ -55,6 +55,10 @@ export function getBiSSRegisterValue(deviceAddress, registerAddress) {
   );
 }
 
+export function getCirculoEncoderMagnetDistance(deviceAddress, encoderPort) {
+  return motionMasterClient.requestGetCirculoEncoderMagnetDistance(deviceAddress, encoderPort).pipe(first());
+}
+
 motionMasterClientWebSocketConnection.open();
 
 export const motionMasterNotificationWebSocketConnection = new MotionMasterNotificationWebSocketConnection();

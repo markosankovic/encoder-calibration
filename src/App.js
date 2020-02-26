@@ -37,18 +37,38 @@ class App extends React.Component {
       </div>
     ) : null;
 
-    const magneticEncoderAlignment = this.state.alive ? (
-      <div className="row">
-        <div className="col">
-          <MagneticEncoderAlignment></MagneticEncoderAlignment>
-        </div>
-      </div>
-    ) : null;
+    // const magneticEncoderAlignment = this.state.alive ? (
+    //   <div className="row">
+    //     <div className="col">
+    //       <MagneticEncoderAlignment encoderPort="0"></MagneticEncoderAlignment>
+    //     </div>
+    //   </div>
+    // ) : null;
 
-    const narrowAngleCalibration = this.state.alive ? (
-      <div className="row">
-        <div className="col">
-          <NarrowAngleCalibration></NarrowAngleCalibration>
+    // const narrowAngleCalibration = this.state.alive ? (
+    //   <div className="row">
+    //     <div className="col">
+    //       <NarrowAngleCalibration encoderPort="1"></NarrowAngleCalibration>
+    //     </div>
+    //   </div>
+    // ) : null;
+
+    const encoders = this.state.alive ? (
+      <div>
+        <div className="row">
+          <div className="col">
+            <h5>Encoder port 0</h5>
+            <MagneticEncoderAlignment encoderPort="0"></MagneticEncoderAlignment>
+            <NarrowAngleCalibration encoderPort="0"></NarrowAngleCalibration>
+          </div>
+        </div>
+        <hr />
+        <div className="row">
+          <div className="col">
+            <h5>Encoder port 1</h5>
+            <MagneticEncoderAlignment encoderPort="1"></MagneticEncoderAlignment>
+            <NarrowAngleCalibration encoderPort="1"></NarrowAngleCalibration>
+          </div>
         </div>
       </div>
     ) : null;
@@ -64,11 +84,7 @@ class App extends React.Component {
 
         <hr />
 
-        {magneticEncoderAlignment}
-
-        <hr />
-
-        {narrowAngleCalibration}
+        {encoders}
 
         <hr />
 

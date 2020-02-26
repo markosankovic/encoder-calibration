@@ -1,5 +1,7 @@
 import React from 'react';
 import { Subscription } from 'rxjs';
+import { takeWhile } from 'rxjs/operators';
+import { MotionMasterMessage } from '@synapticon/motion-master-client';
 
 import { motionMasterClient } from './motionMasterClient';
 
@@ -11,9 +13,11 @@ export class NarrowAngleCalibration extends React.Component {
     super(props);
     this.state = {
       deviceAddress: 0,
+      calibrationProcedureStatus: {},
     };
 
     this.handleStartNarrowAngleCalibration = this.handleStartNarrowAngleCalibration.bind(this);
+    this.handleStartCalibrationProcedure = this.handleStartCalibrationProcedure.bind(this);
     this.handleQuickStop = this.handleQuickStop.bind(this);
   }
 
@@ -27,6 +31,17 @@ export class NarrowAngleCalibration extends React.Component {
 
   handleStartNarrowAngleCalibration() {
     motionMasterClient.requestStartNarrowAngleCalibration(this.state.deviceAddress);
+  }
+
+  handleStartCalibrationProcedure() {
+    motionMasterClient.requestStartCirculoEncoderNarrowAngleCalibrationProcedure(this.state.deviceAddress, this.props.encoderPort).pipe(
+      takeWhile(status => {
+        return (status.success && status.success !== MotionMasterMessage.Status.CirculoEncoderNarrowAngleCalibrationProcedure.Success.Code.DONE) || !status.error;
+      }, true),
+    ).subscribe(calibrationProcedureStatus => {
+      console.info(calibrationProcedureStatus);
+      this.setState({ calibrationProcedureStatus });
+    });
   }
 
   handleQuickStop() {
@@ -44,10 +59,11 @@ export class NarrowAngleCalibration extends React.Component {
 
     return (
       <div>
-        <h5>Narrow Angle Calibration Procedure</h5>
         <div className="d-flex mt-3 px-5">
-          <button className="btn btn-primary" onClick={this.handleStartNarrowAngleCalibration}>START NARROW ANGLE CALIBRATION</button>
-          <button className="btn btn-danger ml-2" onClick={this.handleQuickStop}>QUICK STOP</button>
+          {/* <button className="btn btn-primary" onClick={this.handleStartNarrowAngleCalibration}>START NARROW ANGLE CALIBRATION</button> */}
+          <button className="btn btn-danger mr-2" onClick={this.handleQuickStop}>QUICK STOP</button>
+          <button className="btn btn-primary mr-2" onClick={this.handleStartCalibrationProcedure}>START CALIBRATION PROCEDURE</button>
+          <span className="p-2">{JSON.stringify(this.state.calibrationProcedureStatus)}</span>
         </div>
       </div>
     );

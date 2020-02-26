@@ -2,9 +2,8 @@ import React from 'react';
 import { Subscription } from 'rxjs';
 import { map, mergeMap } from 'rxjs/operators';
 
-import optimum from './optimum.svg';
 import { calcAcGain, calcAfGain, furtherFromValue } from './util';
-import { getBiSSRegisterValue } from './motionMasterClient';
+import { getBiSSRegisterValue, getCirculoEncoderMagnetDistance } from './motionMasterClient';
 
 class MagneticEncoderAlignment extends React.Component {
 
@@ -19,6 +18,7 @@ class MagneticEncoderAlignment extends React.Component {
     };
 
     this.handleMeasureDistance = this.handleMeasureDistance.bind(this);
+    this.handleGetMagnetDistance = this.handleGetMagnetDistance.bind(this);
   }
 
   componentDidMount() {
@@ -56,6 +56,13 @@ class MagneticEncoderAlignment extends React.Component {
     });
   }
 
+  handleGetMagnetDistance() {
+    getCirculoEncoderMagnetDistance(this.state.deviceAddress, this.props.encoderPort).subscribe(status => {
+      console.info(status);
+      this.setState({ measuredDistanceValue: status.distance });
+    });
+  }
+
   render() {
     if (!this.state.deviceAddress) {
       return (
@@ -73,9 +80,6 @@ class MagneticEncoderAlignment extends React.Component {
 
     return (
       <div>
-        <h5>Magnetic Encoder Alignment</h5>
-        <p>To achieve the best result the magnetic disc must be mounted in the optimum distance to the sensor chip.</p>
-        <img src={optimum} alt="Optimum distance to the sensor chip" />
         <div className="mt-3 px-5">
           <div className="position-relative mb-2">
             <div className="arrow_box measuredValueBox" style={measuredDistanceBoxStyle}>{this.state.measuredDistanceValue.toFixed(2)}</div>
@@ -94,8 +98,10 @@ class MagneticEncoderAlignment extends React.Component {
               <div className="py-2 px-1">OUT OF RANGE</div>
             </div>
           </div>
+          {/* <button type="button" className="btn btn-primary mt-3"
+            onClick={this.handleMeasureDistance} disabled={this.state.measureDistanceBtnDisabled}>MEASURE DISTANCE</button> */}
           <button type="button" className="btn btn-primary mt-3"
-            onClick={this.handleMeasureDistance} disabled={this.state.measureDistanceBtnDisabled}>MEASURE DISTANCE</button>
+            onClick={this.handleGetMagnetDistance} disabled={this.state.getMagnetDistanceDisabled}>GET MAGNET DISTANCE</button>
         </div>
       </div>
     );
