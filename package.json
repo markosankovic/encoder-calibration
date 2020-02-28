@@ -1,6 +1,6 @@
 {
   "name": "encoder-calibration",
-  "version": "1.3.0-beta.0",
+  "version": "1.3.0-beta.1",
   "description": "Evaluation tool to know if the Circulo encoder disc is at the correct distance from the sensor.",
   "author": "Marko Sanković <msankovic@synapticon.com> (https://github.com/markosankovic)",
   "license": "ISC",
