@@ -1277,24 +1277,25 @@
     "@svgr/plugin-svgo" "^4.3.1"
     loader-utils "^1.2.3"
 
-"@synapticon/motion-master-client@^1.5.0":
-  version "1.5.0"
-  resolved "https://registry.yarnpkg.com/@synapticon/motion-master-client/-/motion-master-client-1.5.0.tgz#dc7d6dbdf24f6b598cfd3d1406baa3d8a39dfb4c"
-  integrity sha512-lE97wNPj5p3TRWyluR8YFxEbCSbKuI1fpZt0jfKboeAXZpk0i0K79ANrDuTkoMplzoHIc1TZcur163LBfEUo3w==
+"@synapticon/motion-master-client@^1.8.0-beta.0":
+  version "1.8.0-beta.0"
+  resolved "https://registry.yarnpkg.com/@synapticon/motion-master-client/-/motion-master-client-1.8.0-beta.0.tgz#67cfc3cb8ea270af28fd28ece90ae6610d13b79d"
+  integrity sha512-X5sHLdPE5NrVvbEqmyrHjCPiJEBrr6LYtgEE6ASP37xwH2pJFI3WhFiHpssE5uXBL8Yk7cIRgkbxFW7cBI5EMQ==
   dependencies:
-    "@synapticon/motion-master-proto" "^3.0.0-beta.9"
+    "@synapticon/motion-master-proto" "^3.2.0-beta.0"
     commander "^2.20.0"
     debug "^4.1.1"
+    long "^4.0.0"
     rxjs "^6.5.2"
     uuid "^3.3.2"
     yaml "^1.6.0"
   optionalDependencies:
     zeromq "^5.1.1"
 
-"@synapticon/motion-master-proto@^3.0.0-beta.9":
-  version "3.0.0-beta.9"
-  resolved "https://registry.yarnpkg.com/@synapticon/motion-master-proto/-/motion-master-proto-3.0.0-beta.9.tgz#eaa6fea4003fb0783b2cf6f2bb60bb5f51d940fd"
-  integrity sha512-MRqmDKQZIXyx4GbhntYTAhd5OYyo2gtY8PhhN96Fde4dvUxWimM6y7mRTgh52TIe3VDsnMI9mI5bLeVP7TLXUA==
+"@synapticon/motion-master-proto@^3.2.0-beta.0":
+  version "3.2.0-beta.0"
+  resolved "https://registry.yarnpkg.com/@synapticon/motion-master-proto/-/motion-master-proto-3.2.0-beta.0.tgz#72bee40369acadce6b134b77bc2c753dfb46cd20"
+  integrity sha512-9uxPT2Bc16psgHxKHDjsM3Ub3lKd/GXc5LK4RcMn1aps2v65legFNt5PJDTZlwp3IGnkIcBqdLCoojlCVhwlYQ==
   dependencies:
     protobufjs "^6.8.8"
 
@@ -6922,6 +6923,11 @@ optionator@^0.8.1, optionator@^0.8.2:
     prelude-ls "~1.1.2"
     type-check "~0.3.2"
     word-wrap "~1.2.3"
+
+ordinal@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/ordinal/-/ordinal-1.0.3.tgz#1a3c7726a61728112f50944ad7c35c06ae3a0d4d"
+  integrity sha512-cMddMgb2QElm8G7vdaa02jhUNbTSrhsgAGUz1OokD83uJTwSUn+nKoNoKVVaRa08yF6sgfO7Maou1+bgLd9rdQ==
 
 original@^1.0.0:
   version "1.0.2"
