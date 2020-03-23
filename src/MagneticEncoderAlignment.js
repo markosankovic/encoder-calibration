@@ -1,6 +1,7 @@
 import React from 'react';
 import { Subscription } from 'rxjs';
 import { map, mergeMap } from 'rxjs/operators';
+import ordinal from 'ordinal';
 
 import { calcAcGain, calcAfGain, furtherFromValue } from './util';
 import { getBiSSRegisterValue, getCirculoEncoderMagnetDistance } from './motionMasterClient';
@@ -59,7 +60,12 @@ class MagneticEncoderAlignment extends React.Component {
   handleGetMagnetDistance() {
     getCirculoEncoderMagnetDistance(this.state.deviceAddress, this.props.encoderPort).subscribe(status => {
       console.info(status);
-      this.setState({ measuredDistanceValue: status.distance });
+      const distanceRounded = Math.round((status.distance + Number.EPSILON) * 100) / 100;
+      if (distanceRounded === 4.40) {
+        window.alert(`Encoder is not attached on the ${ordinal(this.props.encoderPort + 1)} port!`);
+      } else {
+        this.setState({ measuredDistanceValue: status.distance });
+      }
     });
   }
 
