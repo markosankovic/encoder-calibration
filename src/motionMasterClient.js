@@ -5,8 +5,14 @@ import {
 import Long from 'long';
 import { of } from 'rxjs';
 import { first, map, mergeMap } from 'rxjs/operators';
+import { v4 } from 'uuid';
 
-export const motionMasterClientWebSocketConnection = new MotionMasterClientWebSocketConnection();
+const clientId = v4();
+
+const clientUrl = `ws://${window.location.hostname}:63524?clientId=${clientId}`;
+const notificationUrl = `ws://${window.location.hostname}:63525?clientId=${clientId}`;
+
+export const motionMasterClientWebSocketConnection = new MotionMasterClientWebSocketConnection(clientUrl);
 export const motionMasterClient = motionMasterClientWebSocketConnection.client;
 export const alive$ = motionMasterClientWebSocketConnection.alive$;
 
@@ -61,7 +67,7 @@ export function getCirculoEncoderMagnetDistance(deviceAddress, encoderPort) {
 
 motionMasterClientWebSocketConnection.open();
 
-export const motionMasterNotificationWebSocketConnection = new MotionMasterNotificationWebSocketConnection();
+export const motionMasterNotificationWebSocketConnection = new MotionMasterNotificationWebSocketConnection(notificationUrl);
 motionMasterNotificationWebSocketConnection.subscribe('notification', 1);
 export const motionMasterNotifcation = motionMasterNotificationWebSocketConnection.notification;
 export const systemEvent$ = motionMasterNotifcation.systemEvent$;
